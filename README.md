@@ -33,6 +33,46 @@ Step 1 : require composer package
 composer require tanerincode/module-generator
 ```
 
+
+Step 2 : if this package not working automatically add provider in `config/app.php` 
+
+```
+TanerInCode\ModuleGenerator\Providers\ModuleGeneratorServiceProvider::class,
+```
+
+Step 3 : Publish config file and select `mgenerator.php` 
+
+```
+php artisan vendor:publish
+```
+
+Step 4 : Update Modules Namespace, `mgenerator.php` or `.env` file 
+
+```
+'name_space' => getenv("MODULE_GENERATOR_NAMESPACE", 'ChangeHere')
+```
+
+OR
+
+```
+MODULE_GENERATOR_NAMESPACE=ChangeHere
+```
+
+**PS: Do not touch `src_url`.**
+
+
+Last Step : Replace the Psr-4 field in the Composer.json file with the namespace of your choice.
+
+```
+"autoload": {
+    ...
+    "psr-4": {
+        ...
+        "TanerInCode\\" : "app/Modules"
+    }
+```
+
+
 ## Built With
 
 * [Laravel](https://laravel.com/docs/5.7) - The laravel framework
