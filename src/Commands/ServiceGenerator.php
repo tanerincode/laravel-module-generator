@@ -61,7 +61,7 @@ class ServiceGenerator extends Command
         if ( $first == false )
             $question = $this->ask('Do you want to create an interface? (Y, N)');
         else
-            $question =  'Y';
+            $question =  'N';
 
         $this->makePath =  $modulePath.'/Services';
         $moduleMakePath = $this->makePath."/".ucfirst($fileName)."Service.php";
