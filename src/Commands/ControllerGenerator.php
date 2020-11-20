@@ -1,8 +1,8 @@
 <?php
 
-namespace TanerInCode\ModuleGenerator\Commands;
+namespace TanerInCode\Modulity\Commands;
 
-use TanerInCode\Facades\ModulityFacade;
+use TanerInCode\Modulity\Facades\ModulityFacade;
 use Illuminate\Console\Command;
 
 class ControllerGenerator extends Command

@@ -1,6 +1,6 @@
 {
     "name": "tanerincode/module-generator",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "A Module Generator CLI Package",
     "license": "MIT",
     "keywords": [
@@ -23,14 +23,14 @@
     },
     "autoload": {
         "psr-4": {
-            "TanerInCode\\ModuleGenerator\\": "src/",
+            "TanerInCode\\Modulity\\": "src/",
             "Modules\\" : "app/Modules/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "TanerInCode\\ModuleGenerator\\Providers\\ModuleGeneratorServiceProvider"
+                "TanerInCode\\Modulity\\Providers\\ModulityServiceProvider"
             ]
         }
     }

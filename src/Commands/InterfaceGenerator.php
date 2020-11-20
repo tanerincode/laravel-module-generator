@@ -1,9 +1,9 @@
 <?php
 
-namespace TanerInCode\ModuleGenerator\Commands;
+namespace TanerInCode\Modulity\Commands;
 
 use Illuminate\Console\Command;
-use TanerInCode\Facades\ModulityFacade;
+use TanerInCode\Modulity\Facades\ModulityFacade;
 
 class InterfaceGenerator extends Command
 {

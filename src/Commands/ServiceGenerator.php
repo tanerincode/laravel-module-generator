@@ -1,11 +1,11 @@
 <?php
 
-namespace TanerInCode\ModuleGenerator\Commands;
+namespace TanerInCode\Modulity\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
-use TanerInCode\Facades\ModulityFacade;
+use TanerInCode\Modulity\Facades\ModulityFacade;
 
 class ServiceGenerator extends Command
 {

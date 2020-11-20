@@ -1,11 +1,11 @@
 <?php
 
 
-namespace TanerInCode;
+namespace TanerInCode\Modulity;
 
 
 use Illuminate\Support\Facades\Artisan;
-use TanerInCode\Facades\ModulityFacade;
+use TanerInCode\Modulity\Facades\ModulityFacade;
 use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;

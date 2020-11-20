@@ -1,19 +1,18 @@
 <?php
 
 
-namespace TanerInCode\ModuleGenerator\Providers;
+namespace TanerInCode\Modulity\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use TanerInCode\ModuleGenerator\Commands\ControllerGenerator;
-use TanerInCode\ModuleGenerator\Commands\FacadeGenerator;
-use TanerInCode\ModuleGenerator\Commands\InterfaceGenerator;
-use TanerInCode\ModuleGenerator\Commands\ModelGenerator;
-use TanerInCode\ModuleGenerator\Commands\ModuleGenerator;
-use TanerInCode\ModuleGenerator\Commands\ProviderGenerator;
-use TanerInCode\ModuleGenerator\Commands\RepositoryGenerator;
-use TanerInCode\ModuleGenerator\Commands\ServiceGenerator;
+use TanerInCode\Modulity\Commands\ControllerGenerator;
+use TanerInCode\Modulity\Commands\FacadeGenerator;
+use TanerInCode\Modulity\Commands\InterfaceGenerator;
+use TanerInCode\Modulity\Commands\ModuleGenerator;
+use TanerInCode\Modulity\Commands\ProviderGenerator;
+use TanerInCode\Modulity\Commands\RepositoryGenerator;
+use TanerInCode\Modulity\Commands\ServiceGenerator;
 
-class ModuleGeneratorServiceProvider extends ServiceProvider
+class ModulityServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -26,7 +25,7 @@ class ModuleGeneratorServiceProvider extends ServiceProvider
         {
             $this->publishes([
                 __DIR__.'/../../config/modulity.php' => config_path('modulity.php'),
-            ], 'mgenerator.config');
+            ], 'modulity.config');
 
 
             $this->commands([

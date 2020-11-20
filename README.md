@@ -37,7 +37,7 @@ composer require tanerincode/module-generator
 Step 2 : if this package not working automatically add provider in `config/app.php` 
 
 ```
-TanerInCode\ModuleGenerator\Providers\ModuleGeneratorServiceProvider::class,
+TanerInCode\Modulity\Providers\ModulityServiceProvider::class,
 ```
 
 Step 3 : Publish config file and select `mgenerator.php` 

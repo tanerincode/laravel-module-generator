@@ -1,7 +1,7 @@
 <?php
 
 
-namespace TanerInCode\Facades;
+namespace TanerInCode\Modulity\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
