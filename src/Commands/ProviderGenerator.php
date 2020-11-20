@@ -4,6 +4,7 @@ namespace TanerInCode\ModuleGenerator\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use TanerInCode\Facades\ModulityFacade;
 
 class ProviderGenerator extends Command
 {
@@ -13,7 +14,7 @@ class ProviderGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'generate:provider {module} {providerName}';
+    protected $signature = 'generate:provider {module} {className}';
 
     /**
      * The console command description.
@@ -45,63 +46,18 @@ class ProviderGenerator extends Command
     {
         # get arguments
         $moduleName = $this->argument('module');
-        $providerName = $this->argument('providerName');
+        $className = $this->argument('className');
 
-        // check module exist ?
-        $modulePath = app_path('Modules/'.ucfirst($moduleName));
-        if ( !File::isDirectory($modulePath) )
-        {
-            $this->warn("Module Generator : This Module Not Exist !");
-            return;
+        $result = ModulityFacade::setModulePath(config('modulity.module_path'))
+            ->setModuleName($moduleName)
+            ->setClassName($className)
+            ->setType(ModulityFacade::TYPE_IS_PROVIDER)
+            ->generate();
+
+        if ( $result == 200 ){
+            $this->info("Module Generator : The Provider has been created successfully");
+        }else{
+            $this->warn($result);
         }
-
-        $this->makePath =  app_path('Modules/'.ucfirst($moduleName).'/');
-        $providerMakePath = $this->makePath."/".ucfirst($providerName)."ServiceProvider.php";
-
-        # check class
-        if ( File::exists($providerMakePath) )
-        {
-            $this->error("Module Generator : This Provider Already Exist !");
-            return;
-        }
-
-        if ( File::isDirectory($this->makePath) ){
-                $this->copySetupAndReplace($providerMakePath, $moduleName, $providerName);
-        } else {
-            $this->warn("Module Generator : Module Structure Not Ready for this command!");
-            $this->MakeError = "error";
-        }
-
-        #paths
-        $baseInterfacePath = app_path('Modules/'.ucfirst($moduleName).'/');
-
-        #fileNames
-        $interfaceMakePath = $baseInterfacePath."/".ucfirst($providerName)."ServiceProvider.php";
-
-        # check class
-        if ( File::exists($interfaceMakePath) )
-        {
-            $this->error("Module Generator : This Provider Already Exist !");
-            return;
-        }
-        if (!is_null($this->MakeError))
-            $this->error("Module Generator : Provider Not Created!");
-
-
-        $this->info("Module Generator : Provider Created !");
-        return;
-    }
-
-    private function copySetupAndReplace($interfaceMakePath, $moduleName, $interfaceName)
-    {
-        File::copy(__DIR__ . config('mgenerator.src_url') . "setups/providers/serviceprovider.stub", $interfaceMakePath);
-
-        $classStub = File::get($interfaceMakePath);
-        $replaceForNameSpace = str_replace('#name_space#', config('mgenerator.name_space'), $classStub);
-        $replaceForModule = str_replace('#Module#', $moduleName, $replaceForNameSpace);
-        $replaceInterfaceName = str_replace('#ClassName#', $interfaceName, $replaceForModule);
-
-        # update interface Stub
-        File::put($interfaceMakePath, $replaceInterfaceName);
     }
 }

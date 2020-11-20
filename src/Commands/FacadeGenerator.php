@@ -4,6 +4,7 @@ namespace TanerInCode\ModuleGenerator\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use TanerInCode\Facades\ModulityFacade;
 
 class FacadeGenerator extends Command
 {
@@ -13,7 +14,7 @@ class FacadeGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'generate:facade {module} {fileName}';
+    protected $signature = 'generate:facade {module} {className}';
 
     /**
      * The console command description.
@@ -45,52 +46,20 @@ class FacadeGenerator extends Command
     {
         # get arguments
         $moduleName = $this->argument('module');
-        $fileName = $this->argument('fileName');
+        $className = $this->argument('className');
 
-        // check module exist ?
-        $modulePath = app_path('Modules/'.ucfirst($moduleName));
+        $result = ModulityFacade::setModulePath(config('modulity.module_path'))
+            ->setType(ModulityFacade::TYPE_IS_FACADE)
+            ->setModuleName($moduleName)
+            ->setClassName($className)
+            ->generate();
 
-        if ( !File::isDirectory($modulePath) )
-        {
-            $this->warn("Module Generator : This Module Not Exist !");
-            return;
+        # return success message !
+        if ( $result == 200 ){
+            $this->info("Module Generator : The Facade has been created successfully");
+        }else{
+            $this->warn($result);
         }
-
-        $this->makePath =  $modulePath.'/Support/Facades';
-        $moduleMakePath = $this->makePath."/".ucfirst($fileName)."Facade.php";
-
-        # check class
-        if ( File::exists($moduleMakePath) )
-        {
-            $this->error("Module Generator : This Facade Already Exist !");
-            return;
-        }
-
-        if ( File::isDirectory($this->makePath) ){
-                $this->copySetupAndReplace($moduleMakePath, $moduleName, $fileName);
-        } else {
-            $this->warn("Module Generator : Module Structure Not Ready for this command!");
-            $this->MakeError = "error";
-        }
-
-        if (!is_null($this->MakeError))
-            $this->error("Module Generator : Facade Not Created!");
-
-
-        $this->info("Module Generator : Facade Created !");
-        return;
     }
 
-    private function copySetupAndReplace($interfaceMakePath, $moduleName, $interfaceName)
-    {
-        File::copy(__DIR__ . config('mgenerator.src_url') . "setups/facades/facade.stub", $interfaceMakePath);
-
-        $classStub = File::get($interfaceMakePath);
-        $replaceForNameSpace = str_replace('#name_space#', config('mgenerator.name_space'), $classStub);
-        $replaceForModule = str_replace('#Module#', $moduleName, $replaceForNameSpace);
-        $replaceInterfaceName = str_replace('#ClassName#', $interfaceName, $replaceForModule);
-
-        # update interface Stub
-        File::put($interfaceMakePath, $replaceInterfaceName);
-    }
 }

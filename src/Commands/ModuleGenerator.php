@@ -39,14 +39,15 @@ class ModuleGenerator extends Command
      */
     public function handle()
     {
-        $bar = $this->output->createProgressBar(5);
+        $bar = $this->output->createProgressBar(6);
         $bar->setFormat('Progress: %current%/%max% -> <info>%message%</info>');
+        $bar->setMessage('Start Generating!');
         $bar->start();
 
-        $bar->setMessage('Start Generating!');
 
         $module = $this->argument('module');
-        if ( File::isDirectory(app_path('Modules/'.$module)) )
+
+        if ( File::isDirectory(config('modulity.module_path')."/".$module))
         {
             $bar->finish();
             $bar->clear();
@@ -54,9 +55,14 @@ class ModuleGenerator extends Command
             return;
         }
 
-        File::copyDirectory(__DIR__ . config('mgenerator.src_url') .'setups/directories/ModuleName',app_path('Modules/'.$module));
+        try {
+            File::copyDirectory(__DIR__ . config('modulity.src_url') .'../setups/directories/ModuleName',config('modulity.module_path')."/".$module);
+        }catch (\Exception $exception){
+            $this->warn($exception->getMessage());
+            return false;
+        }
+
         $bar->setMessage('Created Directories!');
-        $bar->advance();
         sleep(1);
 
         # create main class
@@ -64,37 +70,57 @@ class ModuleGenerator extends Command
             'module' => $module,
             'className' => $module
         ]);
-        $bar->setMessage('Created Main Class!');
+
         $bar->advance();
+        $bar->setMessage('Controller Created!');
         sleep(1);
 
         # create service
         Artisan::call("generate:service", [
             'module' => $module,
-            'fileName' => '',
+            'className' => '',
             '--first' => true
         ]);
-        $bar->setMessage('Created Service!');
         $bar->advance();
+        $bar->setMessage('Service Created!');
         sleep(1);
 
         # create repository
         Artisan::call("generate:repository", [
             'module' => $module,
-            'fileName' => '',
+            'className' => '',
             '--first' => true
         ]);
-        $bar->setMessage('Created Repository!');
         $bar->advance();
+        $bar->setMessage('Repository Created!');
         sleep(1);
 
         # create provider
         Artisan::call("generate:provider", [
             'module' => $module,
-            'providerName' => $module
+            'className' => $module
         ]);
-        $bar->setMessage('Created Provider!');
+
         $bar->advance();
+        $bar->setMessage('Provider Created!');
+        sleep(1);
+
+        # create config
+        Artisan::call("generate:config", [
+            'module' => $module,
+            'className' => $module
+        ]);
+        $bar->advance();
+        $bar->setMessage('Config File Created!');
+        sleep(1);
+
+        # create translations
+        Artisan::call("generate:translation", [
+            'module' => $module,
+            'className' => $module
+        ]);
+        $bar->advance();
+        $bar->setMessage('Translation files Created!');
         sleep(1);
 
         $bar->setMessage("");

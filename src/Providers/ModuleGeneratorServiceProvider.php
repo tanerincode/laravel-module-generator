@@ -25,7 +25,7 @@ class ModuleGeneratorServiceProvider extends ServiceProvider
         if ( $this->app->runningInConsole() )
         {
             $this->publishes([
-                __DIR__.'/../../config/mgenerator.php' => config_path('mgenerator.php'),
+                __DIR__.'/../../config/modulity.php' => config_path('modulity.php'),
             ], 'mgenerator.config');
 
 

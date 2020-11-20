@@ -2,26 +2,29 @@
 
 namespace TanerInCode\ModuleGenerator\Commands;
 
-use TanerInCode\Facades\ModulityFacade;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use TanerInCode\Facades\ModulityFacade;
 
-class ControllerGenerator extends Command
+class ConfigGenerator extends Command
 {
+    private $makePath = '';
     /**
      * The name and signature of the console command.
      *
      * @var string
-     * module : Oluşturulacak classın hangi modulun içinde olacağını belirler.
-     * className : Oluşturulacak classın adını belirler. interface adı otomatik olarak tanımlanır.
      */
-    protected $signature = 'generate:controller {module} {className}';
+    protected $signature = 'generate:config {module} {className}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'TanerInCode Module > Class Generator';
+    protected $description = 'TanerInCode Module > Provider  Generator';
+    /**
+     * @var string
+     */
     private $MakeError;
 
     /**
@@ -46,14 +49,13 @@ class ControllerGenerator extends Command
         $className = $this->argument('className');
 
         $result = ModulityFacade::setModulePath(config('modulity.module_path'))
-                            ->setType(ModulityFacade::TYPE_IS_CONTROLLER)
-                            ->setModuleName($moduleName)
-                            ->setClassName($className)
-                            ->generate();
+            ->setModuleName($moduleName)
+            ->setClassName($className)
+            ->setType(ModulityFacade::TYPE_IS_CONFIG)
+            ->generate();
 
-        # return success message !
         if ( $result == 200 ){
-            $this->info("Module Generator : The controller has been created successfully");
+            $this->info("Module Generator : The Config has been created successfully");
         }else{
             $this->warn($result);
         }
